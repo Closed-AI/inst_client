@@ -1,16 +1,14 @@
-import 'package:inst_client/data/auth_service.dart';
+import 'package:inst_client/data/services/auth_service.dart';
 import 'package:inst_client/ui/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class _ViewModel extends ChangeNotifier {
   final _authService = AuthService();
-
   BuildContext context;
   _ViewModel({required this.context}) {
     _asyncInit();
   }
-
   void _asyncInit() async {
     if (await _authService.checkAuth()) {
       AppNavigator.toHome();
@@ -25,7 +23,7 @@ class LoaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(child: CircularProgressIndicator()),
     );
   }
