@@ -21,9 +21,12 @@ class _HomeState extends State<Home> {
   int _counter = 0;
   bool _showFab = true;
   bool _showNotch = true;
+
   final _authService = AuthService();
+
   FloatingActionButtonLocation _fabLocation =
       FloatingActionButtonLocation.endDocked;
+
   void _onShowNotchChanged(bool value) {
     setState(() {
       _showNotch = value;
@@ -146,30 +149,34 @@ class _BottomAppBarTest extends StatelessWidget {
     required this.fabLocation,
     this.shape,
   });
+
   final FloatingActionButtonLocation fabLocation;
   final NotchedShape? shape;
+
   final List<FloatingActionButtonLocation> centerVariants = [
     FloatingActionButtonLocation.centerDocked,
     FloatingActionButtonLocation.centerFloat,
   ];
+
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-        shape: shape,
-        color: Colors.blue,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {},
-            ),
-            if (centerVariants.contains(fabLocation)) const Spacer(),
-            IconButton(
-              icon: const Icon(Icons.favorite),
-              onPressed: () {},
-            )
-          ],
-        ));
+      shape: shape,
+      color: Colors.blue,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {},
+          ),
+          if (centerVariants.contains(fabLocation)) const Spacer(),
+          IconButton(
+            icon: const Icon(Icons.favorite),
+            onPressed: () {},
+          )
+        ],
+      ),
+    );
   }
 }
