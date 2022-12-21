@@ -51,16 +51,21 @@ class App extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: (viewModel.user != null && viewModel.headers != null)
-            ? CircleAvatar(
-                backgroundImage: NetworkImage(
-                    "$baseUrl${viewModel.user!.avatarLink}",
-                    headers: viewModel.headers),
+            ? GestureDetector(
+                onTap: () => AppNavigator.toProfile(),
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      "$baseUrl${viewModel.user!.avatarLink}",
+                      headers: viewModel.headers,
+                    ),
+                  ),
+                ),
               )
             : null,
         title: Text(viewModel.user == null ? "Hi" : viewModel.user!.name),
         actions: [
-          IconButton(
-              icon: const Icon(Icons.refresh), onPressed: viewModel._refresh),
           IconButton(
               icon: const Icon(Icons.exit_to_app),
               onPressed: viewModel._logout),

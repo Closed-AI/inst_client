@@ -1,12 +1,14 @@
 import 'package:inst_client/ui/roots/app.dart';
 import 'package:inst_client/ui/roots/auth.dart';
 import 'package:inst_client/ui/roots/loader.dart';
+import 'package:inst_client/ui/roots/profile.dart';
 import 'package:flutter/material.dart';
 
 class NavigationRoutes {
   static const loaderWidget = "/";
   static const auth = "/auth";
   static const app = "/app";
+  static const profile = "/app/profile";
 }
 
 class AppNavigator {
@@ -20,6 +22,10 @@ class AppNavigator {
   static void toAuth() {
     key.currentState
         ?.pushNamedAndRemoveUntil(NavigationRoutes.auth, ((route) => false));
+  }
+
+  static void toProfile() {
+    key.currentState?.pushNamed(NavigationRoutes.profile);
   }
 
   static void toHome() {
@@ -38,6 +44,10 @@ class AppNavigator {
 
       case NavigationRoutes.app:
         return PageRouteBuilder(pageBuilder: ((_, __, ___) => App.create()));
+
+      case NavigationRoutes.profile:
+        return PageRouteBuilder(
+            pageBuilder: ((_, __, ___) => Profile.create()));
     }
     return null;
   }
