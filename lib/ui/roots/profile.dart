@@ -60,20 +60,16 @@ class Profile extends StatelessWidget {
           padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
           children: [
             CircleAvatar(
-              backgroundImage:
-                  (viewModel.user != null && viewModel.headers != null)
-                      ? NetworkImage(
-                          "$baseUrl${viewModel.user!.avatarLink}",
-                          headers: viewModel.headers,
-                        )
-                      : null,
+              backgroundImage: (viewModel.user != null)
+                  ? NetworkImage(
+                      "$baseUrl${viewModel.user!.avatarLink}",
+                    )
+                  : null,
               radius: 120,
             ),
             const Padding(padding: EdgeInsets.only(top: 10)),
             Text(
-              (viewModel.user != null && viewModel.headers != null)
-                  ? viewModel.user!.name
-                  : "",
+              (viewModel.user != null) ? viewModel.user!.name : "",
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 20),
             ),
