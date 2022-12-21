@@ -71,7 +71,9 @@ class Profile extends StatelessWidget {
             ),
             const Padding(padding: EdgeInsets.only(top: 10)),
             Text(
-              viewModel.user!.name,
+              (viewModel.user != null && viewModel.headers != null)
+                  ? viewModel.user!.name
+                  : "",
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 20),
             ),

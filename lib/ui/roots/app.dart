@@ -36,10 +36,6 @@ class _ViewModel extends ChangeNotifier {
   void _logout() async {
     await _authService.logout().then((value) => AppNavigator.toLoader());
   }
-
-  void _refresh() async {
-    await _authService.tryGetUser();
-  }
 }
 
 class App extends StatelessWidget {

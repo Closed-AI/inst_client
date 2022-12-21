@@ -2,7 +2,13 @@ import 'package:inst_client/ui/app_navigator.dart';
 import 'package:inst_client/ui/roots/loader.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+import 'data/services/database.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await DB.instance.init();
+
   runApp(const MyApp());
 }
 
