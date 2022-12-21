@@ -1,16 +1,18 @@
+import 'package:flutter/services.dart';
 import 'package:inst_client/data/services/sync_service.dart';
 import 'package:inst_client/domain/models/post_model.dart';
 import 'package:inst_client/domain/models/user.dart';
 import 'package:inst_client/internal/config/app_config.dart';
 import 'package:inst_client/internal/config/shared_prefs.dart';
 import 'package:flutter/material.dart';
+import 'package:inst_client/ui/profile/profile.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/services/auth_service.dart';
 import '../../data/services/data_service.dart';
 import '../app_navigator.dart';
 
-class _ViewModel extends ChangeNotifier {
+class AppViewModel extends ChangeNotifier {
   BuildContext context;
   final _authService = AuthService();
   final _dataService = DataService();
@@ -23,7 +25,7 @@ class _ViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  _ViewModel({required this.context}) {
+  AppViewModel({required this.context}) {
     asyncInit();
     _lvc.addListener(() {
       var max = _lvc.position.maxScrollExtent;
@@ -32,7 +34,7 @@ class _ViewModel extends ChangeNotifier {
       if (percent > 80) {
         if (!isLoading) {
           isLoading = true;
-          Future.delayed(Duration(seconds: 1)).then((value) {
+          Future.delayed(const Duration(seconds: 1)).then((value) {
             posts = <PostModel>[...posts!, ...posts!];
             isLoading = false;
           });
@@ -45,6 +47,13 @@ class _ViewModel extends ChangeNotifier {
   User? get user => _user;
   set user(User? val) {
     _user = val;
+    notifyListeners();
+  }
+
+  Image? _avatar;
+  Image? get avatar => _avatar;
+  set avatar(Image? val) {
+    _avatar = val;
     notifyListeners();
   }
 
@@ -65,7 +74,14 @@ class _ViewModel extends ChangeNotifier {
   void asyncInit() async {
     user = await SharedPrefs.getStoredUser();
 
-    await SyncService().syncPosts();
+    var img = await NetworkAssetBundle(Uri.parse("$baseUrl${user!.avatarLink}"))
+        .load("$baseUrl${user!.avatarLink}?v=1");
+    avatar = Image.memory(
+      img.buffer.asUint8List(),
+      fit: BoxFit.fill,
+    );
+
+    //await SyncService().syncPosts();
     posts = await _dataService.getPosts();
   }
 
@@ -74,10 +90,15 @@ class _ViewModel extends ChangeNotifier {
   }
 
   void obclick() {
-    var offset = _lvc.offset;
+    //var offset = _lvc.offset;
 
     _lvc.animateTo(0,
-        duration: Duration(seconds: 1), curve: Curves.easeInCubic);
+        duration: const Duration(seconds: 1), curve: Curves.easeInCubic);
+  }
+
+  void toProfile(BuildContext bc) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (__) => Profile.create(bc)));
   }
 }
 
@@ -85,19 +106,19 @@ class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    var viewModel = context.watch<_ViewModel>();
+    var viewModel = context.watch<AppViewModel>();
     var size = MediaQuery.of(context).size;
     var itemCount = viewModel.posts?.length ?? 0;
 
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: viewModel.obclick,
-          child: Icon(Icons.arrow_circle_up_outlined),
+          child: const Icon(Icons.arrow_circle_up_outlined),
         ),
         appBar: AppBar(
-          leading: (viewModel.user != null)
+          leading: (viewModel.avatar != null)
               ? GestureDetector(
-                  onTap: () => AppNavigator.toProfile(),
+                  onTap: () => viewModel.toProfile(context),
                   child: Padding(
                     padding: const EdgeInsets.all(4),
                     child: CircleAvatar(
@@ -175,7 +196,7 @@ class App extends StatelessWidget {
 
   static create() {
     return ChangeNotifierProvider(
-      create: (BuildContext context) => _ViewModel(context: context),
+      create: (BuildContext context) => AppViewModel(context: context),
       child: const App(),
     );
   }

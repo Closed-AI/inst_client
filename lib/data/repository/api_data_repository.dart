@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:inst_client/data/clients/api_client.dart';
 import 'package:inst_client/data/clients/auth_client.dart';
+import 'package:inst_client/domain/models/attach_meta.dart';
 import 'package:inst_client/domain/models/post_model.dart';
 import 'package:inst_client/domain/models/refresh_token_request.dart';
 import 'package:inst_client/domain/models/token_request.dart';
@@ -35,4 +38,11 @@ class ApiDataRepository extends ApiRepository {
   @override
   Future<List<PostModel>> getPosts(int skip, int take) =>
       _api.getPosts(skip, take);
+
+  @override
+  Future<List<AttachMeta>> uploadTemp({required List<File> files}) =>
+      _api.uploadTemp(files: files);
+
+  @override
+  Future addAvatarToUser(AttachMeta model) => _api.addAvatarToUser(model);
 }

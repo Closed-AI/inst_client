@@ -38,11 +38,11 @@ class AuthService {
     var res = false;
 
     if (await TokenStorage.getAccessToken() != null) {
-      var user = await _api.getUser();
-      if (user != null) {
-        await SharedPrefs.setStoredUser(user);
-        await _dataService.cuUser(user);
-      }
+      //var user = await _api.getUser();
+      //if (user != null) {
+      //  await SharedPrefs.setStoredUser(user);
+      //  await _dataService.cuUser(user);
+      //}
 
       res = true;
     }

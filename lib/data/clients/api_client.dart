@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:inst_client/domain/models/attach_meta.dart';
 import 'package:inst_client/domain/models/post_model.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -16,4 +19,11 @@ abstract class ApiClient {
   @GET("/api/Post/GetPosts")
   Future<List<PostModel>> getPosts(
       @Query("skip") int skip, @Query("take") int take);
+
+  @POST("/api/Attach/UploadFiles")
+  Future<List<AttachMeta>> uploadTemp(
+      {@Part(name: "files") required List<File> files});
+
+  @POST("/api/User/AddAvatarToUser")
+  Future addAvatarToUser(@Body() AttachMeta model);
 }
