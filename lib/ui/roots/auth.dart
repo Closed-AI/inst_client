@@ -1,6 +1,7 @@
 import 'package:inst_client/data/services/auth_service.dart';
 import 'package:inst_client/ui/app_navigator.dart';
 import 'package:flutter/material.dart';
+import 'package:inst_client/ui/roots/create_account_widget.dart';
 import 'package:provider/provider.dart';
 
 class _ViewModelState {
@@ -77,6 +78,11 @@ class _ViewModel extends ChangeNotifier {
       state = state.copyWith(errorText: "произошла ошибка на сервере");
     }
   }
+
+  void toCreateAccount(BuildContext bc) {
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (__) => CreateAccountWidget.create(bc)));
+  }
 }
 
 class Auth extends StatelessWidget {
@@ -103,14 +109,28 @@ class Auth extends StatelessWidget {
                   obscureText: true,
                   decoration: const InputDecoration(hintText: "Enter Password"),
                 ),
-                ElevatedButton(
-                  onPressed: viewModel.checkFields() ? viewModel.login : null,
-                  child: const Text("Login"),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed:
+                          viewModel.checkFields() ? viewModel.login : null,
+                      child: const Text("Login"),
+                    ),
+                    const Text(
+                      "or",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => viewModel.toCreateAccount(context),
+                      child: const Text("Create account"),
+                    ),
+                  ],
                 ),
                 if (viewModel.state.isLoading)
                   const CircularProgressIndicator(),
                 if (viewModel.state.errorText != null)
-                  Text(viewModel.state.errorText!)
+                  Text(viewModel.state.errorText!),
               ],
             ),
           ),

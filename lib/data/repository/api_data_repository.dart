@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:inst_client/data/clients/api_client.dart';
 import 'package:inst_client/data/clients/auth_client.dart';
 import 'package:inst_client/domain/models/attach_meta.dart';
+import 'package:inst_client/domain/models/create_user.dart';
 import 'package:inst_client/domain/models/post_model.dart';
 import 'package:inst_client/domain/models/refresh_token_request.dart';
 import 'package:inst_client/domain/models/token_request.dart';
@@ -31,6 +32,9 @@ class ApiDataRepository extends ApiRepository {
       await _auth.refreshToken(RefreshTokenRequest(
         refreshToken: refreshToken,
       ));
+
+  @override
+  Future createUser(CreateUser model) async => await _auth.registerUser(model);
 
   @override
   Future<User?> getUser() => _api.getUser();

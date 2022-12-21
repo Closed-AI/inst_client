@@ -104,6 +104,7 @@ class AppViewModel extends ChangeNotifier {
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var viewModel = context.watch<AppViewModel>();

@@ -9,6 +9,7 @@ class NavigationRoutes {
   static const auth = "/auth";
   static const app = "/app";
   static const profile = "/app/profile";
+  static const create = "/auth/create";
 }
 
 class AppNavigator {
