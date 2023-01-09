@@ -12,22 +12,17 @@ import '../common/cam_widget.dart';
 import '../roots/app.dart';
 
 class CreatePostViewModel extends ChangeNotifier {
-  final _api = RepositoryModule.apiRepository();
   var descriptionTec = TextEditingController();
+  final _api = RepositoryModule.apiRepository();
 
   var attaches = <AttachMeta>[];
   var images = <Image>[];
 
-  String? temp;
-
   final BuildContext context;
 
   CreatePostViewModel({required this.context}) {
+    descriptionTec.addListener(() {});
     asyncInit();
-
-    descriptionTec.addListener(() {
-      temp = descriptionTec.text;
-    });
   }
 
   User? _user;

@@ -70,18 +70,19 @@ class CreatePostWidget extends StatelessWidget {
                           constraints: const BoxConstraints(
                             maxHeight: 200.0,
                           ),
-                          child: const Scrollbar(
+                          child: Scrollbar(
                             child: SingleChildScrollView(
                               scrollDirection: Axis.vertical,
                               reverse: true,
                               child: SizedBox(
                                 height: 190.0,
                                 child: TextField(
-                                  maxLines: 100,
-                                  decoration: InputDecoration(
+                                  controller: viewModel.descriptionTec,
+                                  decoration: const InputDecoration(
                                     border: InputBorder.none,
                                     hintText: 'Description',
                                   ),
+                                  maxLines: 100,
                                 ),
                               ),
                             ),
