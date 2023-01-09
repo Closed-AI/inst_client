@@ -10,7 +10,7 @@ class User implements DbModel {
   final String name;
   final String email;
   final DateTime birthDate;
-  final String avatarLink;
+  final String? avatarLink;
   User({
     required this.id,
     required this.name,

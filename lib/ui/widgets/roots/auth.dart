@@ -1,7 +1,7 @@
 import 'package:inst_client/data/services/auth_service.dart';
-import 'package:inst_client/ui/app_navigator.dart';
+import 'package:inst_client/ui/navigation/app_navigator.dart';
 import 'package:flutter/material.dart';
-import 'package:inst_client/ui/roots/create_account_widget.dart';
+import 'package:inst_client/ui/widgets/create_account/create_account_widget.dart';
 import 'package:provider/provider.dart';
 
 class _ViewModelState {

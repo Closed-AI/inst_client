@@ -1,5 +1,5 @@
 import 'package:inst_client/data/services/auth_service.dart';
-import 'package:inst_client/ui/app_navigator.dart';
+import 'package:inst_client/ui/navigation/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

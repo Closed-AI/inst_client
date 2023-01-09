@@ -1,19 +1,25 @@
-import 'package:inst_client/ui/roots/app.dart';
-import 'package:inst_client/ui/roots/auth.dart';
-import 'package:inst_client/ui/roots/loader.dart';
-import 'package:inst_client/ui/profile/profile.dart';
+import 'package:inst_client/ui/widgets/roots/app.dart';
+import 'package:inst_client/ui/widgets/roots/auth.dart';
+import 'package:inst_client/ui/widgets/roots/loader.dart';
 import 'package:flutter/material.dart';
+
+import '../../domain/enums/tab_item.dart';
 
 class NavigationRoutes {
   static const loaderWidget = "/";
   static const auth = "/auth";
   static const app = "/app";
-  static const profile = "/app/profile";
-  static const create = "/auth/create";
 }
 
 class AppNavigator {
   static final key = GlobalKey<NavigatorState>();
+  static final navigationKeys = {
+    TabItemEnum.home: GlobalKey<NavigatorState>(),
+    TabItemEnum.search: GlobalKey<NavigatorState>(),
+    TabItemEnum.newPost: GlobalKey<NavigatorState>(),
+    TabItemEnum.favorites: GlobalKey<NavigatorState>(),
+    TabItemEnum.profile: GlobalKey<NavigatorState>(),
+  };
 
   static Future toLoader() async {
     return await key.currentState?.pushNamedAndRemoveUntil(
@@ -23,10 +29,6 @@ class AppNavigator {
   static Future toAuth() async {
     return await key.currentState
         ?.pushNamedAndRemoveUntil(NavigationRoutes.auth, ((route) => false));
-  }
-
-  static Future toProfile() async {
-    return await key.currentState?.pushNamed(NavigationRoutes.profile);
   }
 
   static Future toHome() async {

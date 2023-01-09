@@ -1,14 +1,13 @@
-import 'dart:io';
-
-import 'package:inst_client/ui/profile/profile_view_model.dart';
+import 'package:inst_client/data/services/auth_service.dart';
+import 'package:inst_client/ui/widgets/tab_profile/profile/profile_view_model.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
-import '../../internal/config/app_config.dart';
+import '../../../navigation/app_navigator.dart';
 
-class Profile extends StatelessWidget {
-  const Profile({Key? key}) : super(key: key);
+class ProfileWidget extends StatelessWidget {
+  const ProfileWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +23,10 @@ class Profile extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings_sharp),
-            onPressed: () {},
-            // TODO: add settings
+            icon: const Icon(Icons.exit_to_app),
+            onPressed: () {
+              AuthService().logout().then((value) => AppNavigator.toLoader());
+            },
           ),
         ],
       ),
@@ -39,7 +39,13 @@ class Profile extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
                   children: [
                     viewModel.avatar == null
-                        ? const CircularProgressIndicator()
+                        ? const Center(
+                            child: SizedBox(
+                              width: 30,
+                              height: 30,
+                              child: CircularProgressIndicator(),
+                            ),
+                          )
                         : GestureDetector(
                             onTap: viewModel.changePhoto,
                             child: CircleAvatar(
@@ -67,12 +73,12 @@ class Profile extends StatelessWidget {
     );
   }
 
-  static create(BuildContext bc) {
+  static create() {
     return ChangeNotifierProvider(
       create: (context) {
-        return ProfileViewModel(context: bc);
+        return ProfileViewModel(context: context);
       },
-      child: const Profile(),
+      child: const ProfileWidget(),
     );
   }
 }

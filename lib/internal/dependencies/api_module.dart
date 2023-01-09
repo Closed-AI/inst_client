@@ -1,7 +1,7 @@
 import 'package:inst_client/data/services/auth_service.dart';
 import 'package:inst_client/domain/models/refresh_token_request.dart';
 import 'package:inst_client/internal/config/token_storage.dart';
-import 'package:inst_client/ui/app_navigator.dart';
+import 'package:inst_client/ui/navigation/app_navigator.dart';
 import 'package:dio/dio.dart';
 
 import '../../data/clients/api_client.dart';

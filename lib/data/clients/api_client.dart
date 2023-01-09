@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:inst_client/domain/models/attach_meta.dart';
+import 'package:inst_client/domain/models/create_post_model.dart';
 import 'package:inst_client/domain/models/post_model.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -15,6 +16,9 @@ abstract class ApiClient {
 
   @GET("/api/User/GetCurrentUser")
   Future<User?> getUser();
+
+  @POST("/api/Post/CreatePost")
+  Future createPost(@Body() CreatePostModel body);
 
   @GET("/api/Post/GetPosts")
   Future<List<PostModel>> getPosts(

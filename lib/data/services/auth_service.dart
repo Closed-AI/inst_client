@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:inst_client/data/services/data_service.dart';
+import 'package:inst_client/domain/models/create_user.dart';
 import 'package:inst_client/domain/repository/api_repository.dart';
 import 'package:inst_client/internal/config/shared_prefs.dart';
 import 'package:inst_client/internal/config/token_storage.dart';
@@ -38,16 +39,30 @@ class AuthService {
     var res = false;
 
     if (await TokenStorage.getAccessToken() != null) {
-      //var user = await _api.getUser();
-      //if (user != null) {
-      //  await SharedPrefs.setStoredUser(user);
-      //  await _dataService.cuUser(user);
-      //}
+      var user = await _api.getUser();
+      if (user != null) {
+        await SharedPrefs.setStoredUser(user);
+        await _dataService.cuUser(user);
+      }
 
       res = true;
     }
 
     return res;
+  }
+
+  Future createUser(CreateUser model) async {
+    try {
+      await _api.createUser(model);
+    } on DioError catch (e) {
+      if (e.error is SocketException) {
+        throw NoNetworkException();
+      } else if (<int>[400].contains(e.response?.statusCode)) {
+        throw WrongCredentionalException();
+      } else if (<int>[500].contains(e.response?.statusCode)) {
+        throw ServerException();
+      }
+    }
   }
 
   Future logout() async {
