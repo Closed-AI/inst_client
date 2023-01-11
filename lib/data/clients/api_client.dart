@@ -20,8 +20,19 @@ abstract class ApiClient {
   @POST("/api/Post/CreatePost")
   Future createPost(@Body() CreatePostModel body);
 
+  @POST("/api/Post/LikePost")
+  Future likePost(@Query("postId") String postId);
+
   @GET("/api/Post/GetPosts")
   Future<List<PostModel>> getPosts(
+      @Query("skip") int skip, @Query("take") int take);
+
+  @GET("/api/Post/GetUserPosts")
+  Future<List<PostModel>> getUserPosts(@Query("userId") String userId,
+      @Query("skip") int skip, @Query("take") int take);
+
+  @GET("/api/Post/GetLikedPosts")
+  Future<List<PostModel>> getLikedPosts(@Query("userId") String userId,
       @Query("skip") int skip, @Query("take") int take);
 
   @POST("/api/Attach/UploadFiles")

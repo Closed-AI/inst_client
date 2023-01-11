@@ -9,6 +9,7 @@ CREATE TABLE t_Post(
 	id					TEXT NOT NULL PRIMARY KEY
 	,[description]		TEXT
 	,authorId			TEXT NOT NULL
+	,likeCount          INT
 	,FOREIGN KEY(authorId) REFERENCES t_User(id)
 );
 CREATE TABLE t_PostContent(

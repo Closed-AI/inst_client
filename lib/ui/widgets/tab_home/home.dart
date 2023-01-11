@@ -6,9 +6,11 @@ import '../../../data/services/data_service.dart';
 import '../../../data/services/sync_service.dart';
 import '../../../domain/models/post_model.dart';
 import '../../../internal/config/app_config.dart';
+import '../../../internal/dependencies/repository_module.dart';
 
 class _ViewModel extends ChangeNotifier {
   BuildContext context;
+  final _api = RepositoryModule.apiRepository();
   final _dataService = DataService();
   final _lvc = ScrollController();
 
@@ -56,6 +58,10 @@ class _ViewModel extends ChangeNotifier {
     posts = await _dataService.getPosts();
   }
 
+  void likePost(String postId) {
+    _api.likePost(postId);
+  }
+
   void toPostDetail(String postId) {
     Navigator.of(context)
         .pushNamed(TabNavigatorRoutes.postDetails, arguments: postId);
@@ -72,63 +78,103 @@ class Home extends StatelessWidget {
     var itemCount = viewModel.posts?.length ?? 0;
 
     return SafeArea(
-        child: Container(
-            child: viewModel.posts == null
-                ? const Center(child: CircularProgressIndicator())
-                : Column(
-                    children: [
-                      Expanded(
-                          child: ListView.separated(
-                        controller: viewModel._lvc,
-                        itemBuilder: (_, listIndex) {
-                          Widget res;
-                          var posts = viewModel.posts;
-                          if (posts != null) {
-                            var post = posts[listIndex];
-                            res = GestureDetector(
-                              onTap: () => viewModel.toPostDetail(post.id),
-                              child: Container(
-                                padding: const EdgeInsets.all(10),
-                                height: size.width,
-                                color: Colors.grey,
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                      child: PageView.builder(
-                                        onPageChanged: (value) => viewModel
-                                            .onPageChanged(listIndex, value),
-                                        itemCount: post.contents.length,
-                                        itemBuilder: (_, pageIndex) =>
-                                            Container(
-                                          color: Colors.yellow,
-                                          child: Image(
-                                            image: NetworkImage(
-                                              "$baseUrl${post.contents[pageIndex].contentLink}",
+      child: Container(
+        child: viewModel.posts == null
+            ? const Center(child: CircularProgressIndicator())
+            : Column(
+                children: [
+                  Expanded(
+                    child: ListView.separated(
+                      controller: viewModel._lvc,
+                      itemBuilder: (_, listIndex) {
+                        Widget res;
+                        var posts = viewModel.posts;
+                        if (posts != null) {
+                          var post = posts[listIndex];
+                          res = Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () => viewModel.toPostDetail(post.id),
+                                child: Container(
+                                  height: size.width,
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: PageView.builder(
+                                          onPageChanged: (value) => viewModel
+                                              .onPageChanged(listIndex, value),
+                                          itemCount: post.contents.length,
+                                          itemBuilder: (_, pageIndex) =>
+                                              Container(
+                                            color: Colors.transparent,
+                                            child: Image(
+                                              fit: BoxFit.cover,
+                                              image: NetworkImage(
+                                                "$baseUrl${post.contents[pageIndex].contentLink}",
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
+                                      PageIndicator(
+                                        count: post.contents.length,
+                                        current: viewModel.pager[listIndex],
+                                      ),
+                                      Text(
+                                        post.description ?? "",
+                                        textAlign: TextAlign.left,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 10, right: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        viewModel.likePost(post.id);
+                                      },
+                                      child: Row(
+                                        children: [
+                                          const Icon(Icons.favorite_border),
+                                          Text(post.likeCount.toString()),
+                                        ],
+                                      ),
                                     ),
-                                    PageIndicator(
-                                      count: post.contents.length,
-                                      current: viewModel.pager[listIndex],
+                                    ElevatedButton(
+                                      onPressed: () {},
+                                      child: Row(
+                                        children: [
+                                          const Icon(Icons.chat_bubble_outline),
+                                          // TODO: change to comments count logic
+                                          Text(post.likeCount.toString()),
+                                        ],
+                                      ),
                                     ),
-                                    Text(post.description ?? "")
                                   ],
                                 ),
                               ),
-                            );
-                          } else {
-                            res = const SizedBox.shrink();
-                          }
-                          return res;
-                        },
-                        separatorBuilder: (context, index) => const Divider(),
-                        itemCount: itemCount,
-                      )),
-                      if (viewModel.isLoading) const LinearProgressIndicator()
-                    ],
-                  )));
+                            ],
+                          );
+                        } else {
+                          res = const SizedBox.shrink();
+                        }
+                        return res;
+                      },
+                      separatorBuilder: (context, index) => const Divider(),
+                      itemCount: itemCount,
+                    ),
+                  ),
+                  if (viewModel.isLoading) const LinearProgressIndicator()
+                ],
+              ),
+      ),
+    );
   }
 
   static create() {

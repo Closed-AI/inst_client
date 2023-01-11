@@ -8,12 +8,17 @@ import 'package:flutter/services.dart';
 import 'package:inst_client/ui/widgets/roots/app.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../data/services/data_service.dart';
+import '../../../../data/services/sync_service.dart';
+import '../../../../domain/models/post_model.dart';
 import '../../../../domain/models/user.dart';
 import '../../../../internal/config/shared_prefs.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   final _api = RepositoryModule.apiRepository();
+
   final BuildContext context;
+
   ProfileViewModel({required this.context}) {
     asyncInit();
     var appmodel = context.read<AppViewModel>();
@@ -28,8 +33,18 @@ class ProfileViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<PostModel>? _posts;
+  List<PostModel>? get posts => _posts;
+  set posts(List<PostModel>? val) {
+    _posts = val;
+    notifyListeners();
+  }
+
   Future asyncInit() async {
     user = await SharedPrefs.getStoredUser();
+    await SyncService().syncPosts();
+
+    if (user != null) posts = await _api.getUserPosts(user!.id, 0, 100);
   }
 
   String? _imagePath;

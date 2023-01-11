@@ -12,12 +12,14 @@ class PostModel {
   String? description;
   User author;
   List<PostContent> contents;
+  int likeCount;
 
   PostModel({
     required this.id,
     this.description,
     required this.author,
     required this.contents,
+    required this.likeCount,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) =>

@@ -40,6 +40,9 @@ class ApiDataRepository extends ApiRepository {
   }
 
   @override
+  Future likePost(String postId) async => await _api.likePost(postId);
+
+  @override
   Future<User?> getUser() => _api.getUser();
 
   @override
@@ -50,6 +53,14 @@ class ApiDataRepository extends ApiRepository {
   @override
   Future<List<PostModel>> getPosts(int skip, int take) =>
       _api.getPosts(skip, take);
+
+  @override
+  Future<List<PostModel>> getUserPosts(String userId, int skip, int take) =>
+      _api.getUserPosts(userId, skip, take);
+
+  @override
+  Future<List<PostModel>> getLikedPosts(String userId, int skip, int take) =>
+      _api.getLikedPosts(userId, skip, take);
 
   @override
   Future<List<AttachMeta>> uploadTemp({required List<File> files}) =>
