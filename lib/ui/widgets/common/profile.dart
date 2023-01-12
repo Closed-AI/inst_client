@@ -11,28 +11,38 @@ import 'package:intl/intl.dart';
 
 import '../../../domain/models/post_model.dart';
 import '../../navigation/app_navigator.dart';
+import '../../navigation/tab_navigator.dart';
 
 class ProfileWidget extends StatelessWidget {
   const ProfileWidget({Key? key}) : super(key: key);
 
-  List<Padding> _buildGridTileList(int count, List<PostModel> elements) =>
+  List<GestureDetector> _buildGridTileList(
+          int count, List<PostModel> elements, BuildContext context) =>
       List.generate(
         count,
-        (i) => Padding(
-          padding: const EdgeInsets.all(2),
-          child: Container(
-            height: 10,
-            width: 10,
-            color: Colors.grey,
-            child: Image(
-              fit: BoxFit.cover,
-              image: NetworkImage(
-                "$baseUrl${elements[i].contents[0].contentLink}",
+        (i) => GestureDetector(
+          onTap: () => toPostDetail(elements[i], context),
+          child: Padding(
+            padding: const EdgeInsets.all(2),
+            child: Container(
+              height: 10,
+              width: 10,
+              color: Colors.grey,
+              child: Image(
+                fit: BoxFit.cover,
+                image: NetworkImage(
+                  "$baseUrl${elements[i].contents[0].contentLink}",
+                ),
               ),
             ),
           ),
         ),
       );
+
+  void toPostDetail(PostModel post, BuildContext context) {
+    Navigator.of(context)
+        .pushNamed(TabNavigatorRoutes.postDetails, arguments: post);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,10 +134,7 @@ class ProfileWidget extends StatelessWidget {
             SliverGrid.count(
               crossAxisCount: 3,
               children: (userPosts != null)
-                  ? _buildGridTileList(
-                      userPosts.length,
-                      userPosts,
-                    )
+                  ? _buildGridTileList(userPosts.length, userPosts, context)
                   : [],
             ),
           ],

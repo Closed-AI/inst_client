@@ -63,6 +63,11 @@ class ProfileViewModel extends ChangeNotifier {
     if (user != null) posts = await _api.getUserPosts(user!.id, 0, 100);
   }
 
+  void toPostDetail(PostModel post) {
+    Navigator.of(context)
+        .pushNamed(TabNavigatorRoutes.postDetails, arguments: post);
+  }
+
   String? _imagePath;
   Image? _avatar;
   Image? get avatar => _avatar;

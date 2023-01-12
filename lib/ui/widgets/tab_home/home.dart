@@ -72,9 +72,9 @@ class _ViewModel extends ChangeNotifier {
         .pushNamed(TabNavigatorRoutes.comments, arguments: postId);
   }
 
-  void toPostDetail(String postId) {
+  void toPostDetail(PostModel post) {
     Navigator.of(context)
-        .pushNamed(TabNavigatorRoutes.postDetails, arguments: postId);
+        .pushNamed(TabNavigatorRoutes.postDetails, arguments: post);
   }
 }
 
@@ -105,7 +105,7 @@ class Home extends StatelessWidget {
                           res = Column(
                             children: [
                               GestureDetector(
-                                onTap: () => viewModel.toPostDetail(post.id),
+                                onTap: () => viewModel.toPostDetail(post),
                                 child: Container(
                                   height: size.width + 130,
                                   child: Column(

@@ -72,10 +72,8 @@ class _ViewModel extends ChangeNotifier {
       });
     } on NoNetworkException {
       state = state.copyWith(errorText: "нет сети");
-    } on WrongCredentionalException {
-      state = state.copyWith(errorText: "не правильный логин или пароль");
     } on ServerException {
-      state = state.copyWith(errorText: "произошла ошибка на сервере");
+      state = state.copyWith(errorText: "не правильный логин или пароль");
     }
   }
 

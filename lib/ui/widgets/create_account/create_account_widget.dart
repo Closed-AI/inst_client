@@ -61,7 +61,12 @@ class CreateAccountWidget extends StatelessWidget {
                   },
                 ),
                 ElevatedButton(
-                  onPressed: viewModel.checkFields() ? viewModel.create : null,
+                  onPressed: viewModel.checkFields()
+                      ? () {
+                          _dialogBuilder(context)
+                              .then((value) => viewModel.create());
+                        }
+                      : null,
                   child: const Text("Login"),
                 ),
                 if (viewModel.state.isLoading)
@@ -80,6 +85,29 @@ class CreateAccountWidget extends StatelessWidget {
     return ChangeNotifierProvider<CreateAccountViewModel>(
       create: (context) => CreateAccountViewModel(context: context),
       child: const CreateAccountWidget(),
+    );
+  }
+
+  Future<void> _dialogBuilder(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(""),
+          content: const Text("Пользователь успешно зарегистрирован!"),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
