@@ -6,6 +6,8 @@ import 'package:inst_client/domain/models/create_post_model.dart';
 import 'package:inst_client/domain/models/post_model.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../../domain/models/comment.dart';
+import '../../domain/models/comment_create.dart';
 import '../../domain/models/user.dart';
 
 part 'api_client.g.dart';
@@ -13,6 +15,9 @@ part 'api_client.g.dart';
 @RestApi()
 abstract class ApiClient {
   factory ApiClient(Dio dio, {String? baseUrl}) = _ApiClient;
+
+  @GET("/api/User/GetUserById")
+  Future<User?> getUserById(@Query("userId") String userId);
 
   @GET("/api/User/GetCurrentUser")
   Future<User?> getUser();
@@ -25,6 +30,15 @@ abstract class ApiClient {
 
   @POST("/api/Post/LikePost")
   Future likePost(@Query("postId") String postId);
+
+  @POST("/api/Post/WriteComment")
+  Future writeComment(@Body() CommentCreate body);
+
+  @POST("/api/Post/DeleteComment")
+  Future deleteComment(@Query("commentId") String commentId);
+
+  @GET("/api/Post/GetPostComments")
+  Future<List<Comment>> getPostComments(@Query("postId") String postId);
 
   @GET("/api/Post/GetPosts")
   Future<List<PostModel>> getPosts(

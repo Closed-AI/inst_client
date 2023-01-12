@@ -32,6 +32,7 @@ class DataService {
               author: author,
               contents: contents,
               description: post.description,
+              commentCount: post.commentCount,
               likeCount: post.likeCount),
         );
       }

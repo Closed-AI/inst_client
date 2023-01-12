@@ -9,11 +9,13 @@ class Post implements DbModel {
   final String id;
   final String description;
   final String? authorId;
+  final int commentCount;
   final int likeCount;
   Post({
     required this.id,
     required this.description,
     this.authorId,
+    required this.commentCount,
     required this.likeCount,
   });
 
@@ -29,12 +31,14 @@ class Post implements DbModel {
     String? id,
     String? description,
     String? authorId,
+    int? commentCount,
     int? likeCount,
   }) {
     return Post(
         id: id ?? this.id,
         description: description ?? this.description,
         authorId: authorId ?? this.authorId,
+        commentCount: commentCount ?? this.commentCount,
         likeCount: likeCount ?? this.likeCount);
   }
 }

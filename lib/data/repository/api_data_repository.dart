@@ -12,6 +12,9 @@ import 'package:inst_client/domain/models/token_response.dart';
 import 'package:inst_client/domain/models/user.dart';
 import 'package:inst_client/domain/repository/api_repository.dart';
 
+import '../../domain/models/comment.dart';
+import '../../domain/models/comment_create.dart';
+
 class ApiDataRepository extends ApiRepository {
   final AuthClient _auth;
   final ApiClient _api;
@@ -43,10 +46,24 @@ class ApiDataRepository extends ApiRepository {
   Future likePost(String postId) async => await _api.likePost(postId);
 
   @override
+  Future<User?> getUserById(String userId) => _api.getUserById(userId);
+
+  @override
   Future<User?> getUser() => _api.getUser();
 
   @override
   Future<List<User>> getUsers() => _api.getUsers();
+
+  @override
+  Future writeComment(String postId, String text) =>
+      _api.writeComment(CommentCreate(postId: postId, text: text));
+
+  @override
+  Future deleteComment(String commentId) => _api.deleteComment(commentId);
+
+  @override
+  Future<List<Comment>> getPostComments(String postId) async =>
+      await _api.getPostComments(postId);
 
   @override
   Future createPost(CreatePostModel model) async {

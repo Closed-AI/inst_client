@@ -1,4 +1,5 @@
 import 'package:inst_client/domain/enums/tab_item.dart';
+import 'package:inst_client/ui/widgets/common/comment_list.dart';
 import 'package:inst_client/ui/widgets/common/user_list.dart';
 import 'package:inst_client/ui/widgets/tab_create_post/create_post_widget.dart';
 import 'package:inst_client/ui/widgets/tab_home/post_detail.dart';
@@ -9,6 +10,7 @@ class TabNavigatorRoutes {
   static const String postDetails = "/app/postDetails";
   static const String createPost = "/app/createPost";
   static const String users = "/app/users";
+  static const String comments = "/app/comments";
 }
 
 class TabNavigator extends StatelessWidget {
@@ -31,6 +33,7 @@ class TabNavigator extends StatelessWidget {
         TabNavigatorRoutes.postDetails: (context) => PostDetail.create(arg),
         TabNavigatorRoutes.createPost: (context) => CreatePostWidget.create(),
         TabNavigatorRoutes.users: (context) => UserListWidget.create(arg),
+        TabNavigatorRoutes.comments: (context) => CommentListWidget.create(arg),
       };
 
   @override

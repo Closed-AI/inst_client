@@ -12,6 +12,7 @@ class PostModel {
   String? description;
   User author;
   List<PostContent> contents;
+  int commentCount;
   int likeCount;
 
   PostModel({
@@ -19,6 +20,7 @@ class PostModel {
     this.description,
     required this.author,
     required this.contents,
+    required this.commentCount,
     required this.likeCount,
   });
 

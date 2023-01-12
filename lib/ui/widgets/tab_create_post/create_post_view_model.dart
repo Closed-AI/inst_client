@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:inst_client/domain/models/attach_meta.dart';
+import 'package:inst_client/ui/navigation/app_navigator.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../domain/models/user.dart';
@@ -16,7 +17,7 @@ class CreatePostViewModel extends ChangeNotifier {
   final _api = RepositoryModule.apiRepository();
 
   var attaches = <AttachMeta>[];
-  var images = <Image>[];
+  var images = <Widget>[];
 
   final BuildContext context;
 
@@ -57,12 +58,41 @@ class CreatePostViewModel extends ChangeNotifier {
     if (_imagePath != null) {
       var t = await _api.uploadTemp(files: [File(_imagePath!)]);
       if (t.isNotEmpty) {
+        var widget = Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: Stack(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.width,
+                child: Image(
+                  fit: BoxFit.cover,
+                  image: Image.file(File(_imagePath!)).image,
+                ),
+              ),
+              Positioned(
+                top: 2,
+                right: 2,
+                child: GestureDetector(
+                  onTap: () {},
+                  child: const Icon(
+                    Icons.cancel,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+
         attaches.add(t.first);
-        images.add(Image.file(File(_imagePath!)));
+        images.add(widget);
       }
     }
     notifyListeners();
   }
+
+  void deletePhoto() {}
 
   Future createPost() async {
     _api.createPost(
@@ -72,5 +102,13 @@ class CreatePostViewModel extends ChangeNotifier {
         contents: attaches,
       ),
     );
+
+    AppNavigator.toHome();
+
+    attaches = <AttachMeta>[];
+    images = <Widget>[];
+
+    descriptionTec.text = "";
+    notifyListeners();
   }
 }

@@ -102,6 +102,8 @@ class ProfileViewModel extends ChangeNotifier {
         appmodel.avatar = avImage;
       }
     }
+
+    notifyListeners();
   }
 
   void toUserList(List<User>? users) {

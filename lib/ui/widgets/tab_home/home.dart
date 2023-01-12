@@ -7,12 +7,15 @@ import '../../../data/services/sync_service.dart';
 import '../../../domain/models/post_model.dart';
 import '../../../internal/config/app_config.dart';
 import '../../../internal/dependencies/repository_module.dart';
+import '../roots/app.dart';
 
 class _ViewModel extends ChangeNotifier {
   BuildContext context;
   final _api = RepositoryModule.apiRepository();
   final _dataService = DataService();
   final _lvc = ScrollController();
+
+  bool _changed = false;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -60,6 +63,13 @@ class _ViewModel extends ChangeNotifier {
 
   void likePost(String postId) {
     _api.likePost(postId);
+
+    notifyListeners();
+  }
+
+  void toPostComments(String postId) async {
+    Navigator.of(context)
+        .pushNamed(TabNavigatorRoutes.comments, arguments: postId);
   }
 
   void toPostDetail(String postId) {
@@ -73,6 +83,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var appmodel = context.read<AppViewModel>();
     var viewModel = context.watch<_ViewModel>();
     var size = MediaQuery.of(context).size;
     var itemCount = viewModel.posts?.length ?? 0;
@@ -142,10 +153,14 @@ class Home extends StatelessWidget {
                                         count: post.contents.length,
                                         current: viewModel.pager[listIndex],
                                       ),
-                                      Text(
-                                        post.description ?? "",
-                                        textAlign: TextAlign.left,
-                                      )
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 10, right: 10),
+                                        child: Text(
+                                          post.description ?? "",
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -169,12 +184,13 @@ class Home extends StatelessWidget {
                                       ),
                                     ),
                                     ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        viewModel.toPostComments(post.id);
+                                      },
                                       child: Row(
                                         children: [
                                           const Icon(Icons.chat_bubble_outline),
-                                          // TODO: change to comments count logic
-                                          Text(post.likeCount.toString()),
+                                          Text(post.commentCount.toString()),
                                         ],
                                       ),
                                     ),
