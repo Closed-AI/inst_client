@@ -3,14 +3,14 @@ import 'package:inst_client/data/services/data_service.dart';
 import 'package:inst_client/domain/models/post.dart';
 import 'package:inst_client/domain/models/user.dart';
 import 'package:inst_client/internal/config/app_config.dart';
-import 'package:inst_client/ui/widgets/tab_profile/profile/profile_view_model.dart';
+import 'package:inst_client/ui/widgets/common/profile_view_model.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../domain/models/post_model.dart';
-import '../../../navigation/app_navigator.dart';
+import '../../../domain/models/post_model.dart';
+import '../../navigation/app_navigator.dart';
 
 class ProfileWidget extends StatelessWidget {
   const ProfileWidget({Key? key}) : super(key: key);
@@ -125,8 +125,8 @@ class ProfileWidget extends StatelessWidget {
               crossAxisCount: 3,
               children: (userPosts != null)
                   ? _buildGridTileList(
-                      userPosts!.length,
-                      userPosts!,
+                      userPosts.length,
+                      userPosts,
                     )
                   : [],
             ),
@@ -136,7 +136,7 @@ class ProfileWidget extends StatelessWidget {
     );
   }
 
-  static create() {
+  static create(ElevatedButton button) {
     return ChangeNotifierProvider(
       create: (context) {
         return ProfileViewModel(context: context);

@@ -46,6 +46,9 @@ class ApiDataRepository extends ApiRepository {
   Future<User?> getUser() => _api.getUser();
 
   @override
+  Future<List<User>> getUsers() => _api.getUsers();
+
+  @override
   Future createPost(CreatePostModel model) async {
     await _api.createPost(model);
   }
@@ -53,6 +56,21 @@ class ApiDataRepository extends ApiRepository {
   @override
   Future<List<PostModel>> getPosts(int skip, int take) =>
       _api.getPosts(skip, take);
+
+  @override
+  Future subscribe(String targetId) => _api.subscribe(targetId);
+
+  @override
+  Future<bool> isSubscibed(String targetId, String subId) =>
+      _api.isSubscribed(targetId, subId);
+
+  @override
+  Future<List<User>> getSubscribtions(String userId) =>
+      _api.getSubscribtions(userId);
+
+  @override
+  Future<List<User>> getSubscribers(String userId) =>
+      _api.getSubscribers(userId);
 
   @override
   Future<List<PostModel>> getUserPosts(String userId, int skip, int take) =>

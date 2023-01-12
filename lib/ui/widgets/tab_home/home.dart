@@ -96,9 +96,31 @@ class Home extends StatelessWidget {
                               GestureDetector(
                                 onTap: () => viewModel.toPostDetail(post.id),
                                 child: Container(
-                                  height: size.width,
+                                  height: size.width + 130,
                                   child: Column(
                                     children: [
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(5),
+                                            child: GestureDetector(
+                                              onTap:
+                                                  () {}, // TODO: go to user profile
+                                              child: CircleAvatar(
+                                                  radius: 20,
+                                                  backgroundImage: (post.author
+                                                              .avatarLink !=
+                                                          null)
+                                                      ? NetworkImage(
+                                                          "$baseUrl${post.author.avatarLink}")
+                                                      : Image.asset(
+                                                              "assets/images/blank_avatar.png")
+                                                          .image),
+                                            ),
+                                          ),
+                                          Text(post.author.name),
+                                        ],
+                                      ),
                                       Expanded(
                                         child: PageView.builder(
                                           onPageChanged: (value) => viewModel

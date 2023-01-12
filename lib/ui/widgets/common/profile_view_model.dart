@@ -8,11 +8,11 @@ import 'package:flutter/services.dart';
 import 'package:inst_client/ui/widgets/roots/app.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../data/services/data_service.dart';
-import '../../../../data/services/sync_service.dart';
-import '../../../../domain/models/post_model.dart';
-import '../../../../domain/models/user.dart';
-import '../../../../internal/config/shared_prefs.dart';
+import '../../../data/services/sync_service.dart';
+import '../../../domain/models/post_model.dart';
+import '../../../domain/models/user.dart';
+import '../../../internal/config/shared_prefs.dart';
+import '../../navigation/tab_navigator.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   final _api = RepositoryModule.apiRepository();
@@ -40,8 +40,24 @@ class ProfileViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<User>? _subscribtions;
+  List<User>? get subscribtions => _subscribtions;
+  set subscribtions(List<User>? val) {
+    _subscribtions = val;
+    notifyListeners();
+  }
+
+  List<User>? _subscribers;
+  List<User>? get subscribers => _subscribers;
+  set subscribers(List<User>? val) {
+    _subscribers = val;
+    notifyListeners();
+  }
+
   Future asyncInit() async {
     user = await SharedPrefs.getStoredUser();
+    subscribtions = await _api.getSubscribtions(user!.id);
+    subscribers = await _api.getSubscribers(user!.id);
     await SyncService().syncPosts();
 
     if (user != null) posts = await _api.getUserPosts(user!.id, 0, 100);
@@ -86,5 +102,9 @@ class ProfileViewModel extends ChangeNotifier {
         appmodel.avatar = avImage;
       }
     }
+  }
+
+  void toUserList(List<User>? users) {
+    Navigator.of(context).pushNamed(TabNavigatorRoutes.users, arguments: users);
   }
 }

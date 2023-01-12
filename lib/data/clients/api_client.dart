@@ -17,6 +17,9 @@ abstract class ApiClient {
   @GET("/api/User/GetCurrentUser")
   Future<User?> getUser();
 
+  @GET("/api/User/GetUsers")
+  Future<List<User>> getUsers();
+
   @POST("/api/Post/CreatePost")
   Future createPost(@Body() CreatePostModel body);
 
@@ -34,6 +37,21 @@ abstract class ApiClient {
   @GET("/api/Post/GetLikedPosts")
   Future<List<PostModel>> getLikedPosts(@Query("userId") String userId,
       @Query("skip") int skip, @Query("take") int take);
+
+//subs
+  @POST("/api/User/Subscribe")
+  Future subscribe(@Query("targetId") String targetId);
+
+  @GET("/api/User/IsSubscribed")
+  Future<bool> isSubscribed(
+      @Query("targetId") String targetId, @Query("subId") String subId);
+
+  @GET("/api/User/GetSubscribsions")
+  Future<List<User>> getSubscribtions(@Query("userId") String userId);
+
+  @GET("/api/User/GetSubscribers")
+  Future<List<User>> getSubscribers(@Query("userId") String userId);
+//subs end
 
   @POST("/api/Attach/UploadFiles")
   Future<List<AttachMeta>> uploadTemp(

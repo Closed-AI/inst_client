@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inst_client/ui/widgets/tab_create_post/create_post_widget.dart';
 
 import '../../ui/widgets/tab_home/home.dart';
-import '../../ui/widgets/tab_profile/profile/profile.dart';
+import '../../ui/widgets/tab_profile/profile/my_profile.dart';
 
 enum TabItemEnum { home, search, newPost, favorites, profile }
 
@@ -20,6 +20,6 @@ class TabEnums {
   static Map<TabItemEnum, Widget> tabRoots = {
     TabItemEnum.home: Home.create(),
     TabItemEnum.newPost: CreatePostWidget.create(),
-    TabItemEnum.profile: ProfileWidget.create(),
+    TabItemEnum.profile: MyProfileWidget.create(),
   };
 }

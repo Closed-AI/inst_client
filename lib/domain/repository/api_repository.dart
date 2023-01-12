@@ -14,9 +14,16 @@ abstract class ApiRepository {
   Future<TokenResponse?> refreshToken(String refreshToken);
   Future createUser(CreateUser model);
   Future<User?> getUser();
+  Future<List<User>> getUsers();
   Future createPost(CreatePostModel model);
   Future likePost(String postId);
   Future<List<PostModel>> getPosts(int skip, int take);
+  //---------------- subs section ----------------
+  Future subscribe(String targetId);
+  Future<bool> isSubscibed(String targetId, String subId);
+  Future<List<User>> getSubscribtions(String userId);
+  Future<List<User>> getSubscribers(String userId);
+  //----------------------------------------------
   Future<List<PostModel>> getUserPosts(String userId, int skip, int take);
   Future<List<PostModel>> getLikedPosts(String userId, int skip, int take);
   Future<List<AttachMeta>> uploadTemp({required List<File> files});
